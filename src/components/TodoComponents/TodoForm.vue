@@ -224,6 +224,55 @@ const closeExtendModal = () => {
                             required
                             class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
                         />
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Notes</label
+                        >
+                        <input
+                            type="text"
+                            :value="notesDetails"
+                            @input="
+                                emit(
+                                    'update:notesDetails',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            placeholder="What needs to be done?"
+                            required
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Priority</label
+                        >
+                        <select
+                            :value="priorityDetails"
+                            @input="
+                                emit(
+                                    'update:priorityDetails',
+                                    ($event.target as HTMLSelectElement).value,
+                                )
+                            "
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Status</label
+                        >
+                        <input
+                            type="text"
+                            :value="statusDetails"
+                            @input="
+                                emit(
+                                    'update:statusDetails',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            placeholder="What needs to be done?"
+                            required
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
                     </div>
                 </div>
 

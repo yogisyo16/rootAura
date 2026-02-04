@@ -6,7 +6,15 @@ import Modal from "../Modal.vue";
 import Alert from "../Alert.vue";
 import TodoItem from "./TodoItem.vue";
 import TodoForm from "./TodoForm.vue";
-
+import {
+    getTodos,
+    createTodo,
+    deleteTodo,
+    updateTodo,
+    toggleTodoComplete,
+    getTodosDetailsById,
+    createTodosDetails,
+} from "@/services/todoServices/services";
 const {
     todos,
     fetchDetailsId,
@@ -24,6 +32,8 @@ const {
     handleCreateTodo,
     handleDeleteTodo,
     handlStatusTodos,
+    handleCreateTodoDetails,
+    fetchTodos,
 } = useTodo();
 
 // Alert state
@@ -42,8 +52,27 @@ const closeModal = () => {
 };
 
 const handleSubmit = async () => {
-    const success = await handleCreateTodo();
-    if (success) {
+    const createdTodo = await handleCreateTodo();
+    let detailsSuccess;
+    if (createdTodo) {
+        console.log("Successfully created ID:", createdTodo.id);
+        console.log("Successfully created Task:", createdTodo.task);
+
+        detailsSuccess = await handleCreateTodoDetails(createdTodo.id);
+
+        console.log("Details created:", detailsSuccess);
+        if (detailsSuccess) {
+            await fetchTodos();
+            closeModal();
+        } else {
+            alert("Todo created, but details failed to save.");
+            await fetchTodos();
+            closeModal();
+        }
+    } else {
+        console.log("Todo creation failed.", createdTodo);
+        console.log("Todo creation failed.", detailsSuccess);
+        // alert("Todo creation failed.");
         closeModal();
     }
 };
@@ -109,6 +138,9 @@ const handleSubmit = async () => {
                     v-model:dateDuePart="dateDuePart"
                     v-model:dateDueTimePart="dateDueTimePart"
                     v-model:taskDetails="taskDetails"
+                    v-model:notesDetails="notesDetails"
+                    v-model:statusDetails="statusDetails"
+                    v-model:priorityDetails="priorityDetails"
                     @submit="handleSubmit"
                 />
             </template>
