@@ -6,15 +6,6 @@ import Modal from "../Modal.vue";
 import Alert from "../Alert.vue";
 import TodoItem from "./TodoItem.vue";
 import TodoForm from "./TodoForm.vue";
-import {
-    getTodos,
-    createTodo,
-    deleteTodo,
-    updateTodo,
-    toggleTodoComplete,
-    getTodosDetailsById,
-    createTodosDetails,
-} from "@/services/todoServices/services";
 const {
     todos,
     fetchDetailsId,
@@ -51,29 +42,43 @@ const closeModal = () => {
     isModalOpen.value = false;
 };
 
+// Handle submit now have been updated to handle details creation also
+// This creates more enhancements to the Todo creation process
+// Before the submit it can be done for details but the todos.id it will undefined on backend
+// Now it can be done for details and todos.id it will be defined on backend
 const handleSubmit = async () => {
-    const createdTodo = await handleCreateTodo();
-    let detailsSuccess;
-    if (createdTodo) {
-        console.log("Successfully created ID:", createdTodo.id);
-        console.log("Successfully created Task:", createdTodo.task);
+    try {
+        const createdTodo = await handleCreateTodo();
+        if (createdTodo && createdTodo.id) {
+            // This is crucial for details creation
+            // Because in future details can be created by the user not just only inside the Create Todo Form
+            if (taskDetails.value && taskDetails.value.trim() !== "") {
+                console.log("Details found, saving...", createdTodo.id);
 
-        detailsSuccess = await handleCreateTodoDetails(createdTodo.id);
-
-        console.log("Details created:", detailsSuccess);
-        if (detailsSuccess) {
-            await fetchTodos();
-            closeModal();
+                await handleCreateTodoDetails(createdTodo.id);
+            }
         } else {
-            alert("Todo created, but details failed to save.");
-            await fetchTodos();
-            closeModal();
+            console.error("Todo creation failed or ID is missing", createdTodo);
         }
-    } else {
-        console.log("Todo creation failed.", createdTodo);
-        console.log("Todo creation failed.", detailsSuccess);
-        // alert("Todo creation failed.");
+    } catch (error) {
+        console.error("Unexpected error in handleSubmit:", error);
+    } finally {
+        // The fetchTodos function is crucial for updating the UI with the latest data after a successful submission.
+        await fetchTodos();
         closeModal();
+    }
+};
+
+const handleOpenDetailsModal = (id: string) => {
+    openModal();
+};
+
+const handleSubmitDetailsId = async (id: string) => {
+    try {
+        const createdDetails = await handleCreateTodoDetails(id);
+        console.log("Details created:", createdDetails);
+    } catch (error) {
+        console.error("Error creating details:", error);
     }
 };
 </script>

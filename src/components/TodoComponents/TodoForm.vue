@@ -43,10 +43,10 @@ const closeTimeModal = () => {
     isExtendTimeModal.value = false;
 
     // Reset date inputs
-    emit("update:dateStartPart", "");
-    emit("update:dateStartTimePart", "");
-    emit("update:dateDuePart", "");
-    emit("update:dateDueTimePart", "");
+    // emit("update:dateStartPart", "");
+    // emit("update:dateStartTimePart", "");
+    // emit("update:dateDuePart", "");
+    // emit("update:dateDueTimePart", "");
 };
 
 const extendModal = () => {
@@ -58,10 +58,10 @@ const closeExtendModal = () => {
     console.log("Close Extend Modal");
     isExtendModal.value = false;
 
-    emit("update:taskDetails", "");
-    emit("update:notesDetails", "");
-    emit("update:statusDetails", "");
-    emit("update:priorityDetails", "");
+    // emit("update:taskDetails", "");
+    // emit("update:notesDetails", "");
+    // emit("update:statusDetails", "");
+    // emit("update:priorityDetails", "");
 };
 </script>
 

@@ -29,6 +29,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     delete: [id: string];
     updateStatus: [id: string];
+    openDetails: [id: string];
 }>();
 
 // Local state for this todo item
