@@ -6,19 +6,25 @@ import Modal from "../Modal.vue";
 import Alert from "../Alert.vue";
 import TodoItem from "./TodoItem.vue";
 import TodoForm from "./TodoForm.vue";
-
 const {
     todos,
+    fetchDetailsId,
     taskInput,
     dateStartPart,
     dateStartTimePart,
     dateDuePart,
     dateDueTimePart,
+    taskDetails,
+    notesDetails,
+    priorityDetails,
+    statusDetails,
     loading,
     formatDate,
     handleCreateTodo,
     handleDeleteTodo,
     handlStatusTodos,
+    handleCreateTodoDetails,
+    fetchTodos,
 } = useTodo();
 
 // Alert state
@@ -36,10 +42,43 @@ const closeModal = () => {
     isModalOpen.value = false;
 };
 
+// Handle submit now have been updated to handle details creation also
+// This creates more enhancements to the Todo creation process
+// Before the submit it can be done for details but the todos.id it will undefined on backend
+// Now it can be done for details and todos.id it will be defined on backend
 const handleSubmit = async () => {
-    const success = await handleCreateTodo();
-    if (success) {
+    try {
+        const createdTodo = await handleCreateTodo();
+        if (createdTodo && createdTodo.id) {
+            // This is crucial for details creation
+            // Because in future details can be created by the user not just only inside the Create Todo Form
+            if (taskDetails.value && taskDetails.value.trim() !== "") {
+                console.log("Details found, saving...", createdTodo.id);
+
+                await handleCreateTodoDetails(createdTodo.id);
+            }
+        } else {
+            console.error("Todo creation failed or ID is missing", createdTodo);
+        }
+    } catch (error) {
+        console.error("Unexpected error in handleSubmit:", error);
+    } finally {
+        // The fetchTodos function is crucial for updating the UI with the latest data after a successful submission.
+        await fetchTodos();
         closeModal();
+    }
+};
+
+const handleOpenDetailsModal = (id: string) => {
+    openModal();
+};
+
+const handleSubmitDetailsId = async (id: string) => {
+    try {
+        const createdDetails = await handleCreateTodoDetails(id);
+        console.log("Details created:", createdDetails);
+    } catch (error) {
+        console.error("Error creating details:", error);
     }
 };
 </script>
@@ -103,6 +142,10 @@ const handleSubmit = async () => {
                     v-model:dateStartTimePart="dateStartTimePart"
                     v-model:dateDuePart="dateDuePart"
                     v-model:dateDueTimePart="dateDueTimePart"
+                    v-model:taskDetails="taskDetails"
+                    v-model:notesDetails="notesDetails"
+                    v-model:statusDetails="statusDetails"
+                    v-model:priorityDetails="priorityDetails"
                     @submit="handleSubmit"
                 />
             </template>

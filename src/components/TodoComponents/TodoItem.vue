@@ -13,6 +13,11 @@ import IcEye from "../../assets/icons/IcEye.vue";
 import IcTrash from "../../assets/icons/IcTrash.vue";
 import IcMenu from "../../assets/icons/IcMenu.vue";
 import IcChevronDown from "../../assets/icons/IcChevronDown.vue";
+import {
+    getTodosDetailsAll,
+    getTodosDetailsById,
+    getTodosDetailByTodoId,
+} from "@/services/todoServices/services";
 
 // Define props
 const props = defineProps<{
@@ -24,6 +29,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     delete: [id: string];
     updateStatus: [id: string];
+    openDetails: [id: string];
 }>();
 
 // Local state for this todo item
@@ -63,6 +69,12 @@ const handleDelete = () => {
 
 const handleStatusTodo = () => {
     emit("updateStatus", props.todo.id);
+    console.log(getTodosDetailsAll(), ": All GetAllDetails");
+    console.log(
+        getTodosDetailsById(props.todo.todo_details.id),
+        "All DetailsId",
+    );
+    console.log(getTodosDetailByTodoId(props.todo.id), "All TodoId");
 };
 
 const todoProgress = () => {
@@ -107,7 +119,7 @@ const todoProgress = () => {
             <div
                 v-if="
                     todo.todo_details?.task_details ||
-                    todo.todo_details?.note_details ||
+                    todo.todo_details?.notes_details ||
                     todo.todo_details?.status_details ||
                     todo.todo_details?.priority_details
                 "
@@ -142,7 +154,7 @@ const todoProgress = () => {
                         <small class="text-gray-300">
                             Notes:
                             <span class="text-gray-400">
-                                {{ todo.todo_details?.note_details || "N/A" }}
+                                {{ todo.todo_details?.notes_details || "N/A" }}
                             </span>
                         </small>
                     </div>

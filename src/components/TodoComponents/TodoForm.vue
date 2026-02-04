@@ -9,6 +9,11 @@ const props = defineProps<{
     dateStartTimePart: string;
     dateDuePart: string;
     dateDueTimePart: string;
+
+    taskDetails?: string;
+    notesDetails?: string;
+    statusDetails?: string;
+    priorityDetails?: string;
 }>();
 
 // Define emits
@@ -18,6 +23,10 @@ const emit = defineEmits<{
     "update:dateStartTimePart": [value: string];
     "update:dateDuePart": [value: string];
     "update:dateDueTimePart": [value: string];
+    "update:taskDetails": [value: string];
+    "update:notesDetails": [value: string];
+    "update:statusDetails": [value: string];
+    "update:priorityDetails": [value: string];
     submit: [];
 }>();
 
@@ -34,10 +43,10 @@ const closeTimeModal = () => {
     isExtendTimeModal.value = false;
 
     // Reset date inputs
-    emit("update:dateStartPart", "");
-    emit("update:dateStartTimePart", "");
-    emit("update:dateDuePart", "");
-    emit("update:dateDueTimePart", "");
+    // emit("update:dateStartPart", "");
+    // emit("update:dateStartTimePart", "");
+    // emit("update:dateDuePart", "");
+    // emit("update:dateDueTimePart", "");
 };
 
 const extendModal = () => {
@@ -48,6 +57,11 @@ const extendModal = () => {
 const closeExtendModal = () => {
     console.log("Close Extend Modal");
     isExtendModal.value = false;
+
+    // emit("update:taskDetails", "");
+    // emit("update:notesDetails", "");
+    // emit("update:statusDetails", "");
+    // emit("update:priorityDetails", "");
 };
 </script>
 
@@ -100,80 +114,82 @@ const closeExtendModal = () => {
                 v-if="isExtendTimeModal"
                 class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-300"
             >
-                <div class="flex flex-col">
-                    <label class="text-sm font-bold mb-1 text-gray-700"
-                        >Start Date *</label
-                    >
-                    <input
-                        type="date"
-                        :value="dateStartPart"
-                        @input="
-                            emit(
-                                'update:dateStartPart',
-                                ($event.target as HTMLInputElement).value,
-                            )
-                        "
-                        required
-                        class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                    />
-                </div>
+                <div class="flex flex-col gap-2 pb-2">
+                    <div class="flex flex-col">
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Start Date *</label
+                        >
+                        <input
+                            type="date"
+                            :value="dateStartPart"
+                            @input="
+                                emit(
+                                    'update:dateStartPart',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            required
+                            class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
 
-                <div class="flex flex-col">
-                    <label class="text-sm font-bold mb-1 text-gray-700"
-                        >Start Time (Optional)</label
-                    >
-                    <input
-                        type="time"
-                        :value="dateStartTimePart"
-                        @input="
-                            emit(
-                                'update:dateStartTimePart',
-                                ($event.target as HTMLInputElement).value,
-                            )
-                        "
-                        class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                    />
-                    <small class="text-gray-500 mt-1"
-                        >If not specified, defaults to 00:00</small
-                    >
-                </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Start Time (Optional)</label
+                        >
+                        <input
+                            type="time"
+                            :value="dateStartTimePart"
+                            @input="
+                                emit(
+                                    'update:dateStartTimePart',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                        <small class="text-gray-500 mt-1"
+                            >If not specified, defaults to 00:00</small
+                        >
+                    </div>
 
-                <div class="flex flex-col">
-                    <label class="text-sm font-bold mb-1 text-gray-700"
-                        >Due Date *</label
-                    >
-                    <input
-                        type="date"
-                        :value="dateDuePart"
-                        @input="
-                            emit(
-                                'update:dateDuePart',
-                                ($event.target as HTMLInputElement).value,
-                            )
-                        "
-                        required
-                        class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                    />
-                </div>
+                    <div class="flex flex-col">
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Due Date *</label
+                        >
+                        <input
+                            type="date"
+                            :value="dateDuePart"
+                            @input="
+                                emit(
+                                    'update:dateDuePart',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            required
+                            class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
 
-                <div class="flex flex-col">
-                    <label class="text-sm font-bold mb-1 text-gray-700"
-                        >Due Time (Optional)</label
-                    >
-                    <input
-                        type="time"
-                        :value="dateDueTimePart"
-                        @input="
-                            emit(
-                                'update:dateDueTimePart',
-                                ($event.target as HTMLInputElement).value,
-                            )
-                        "
-                        class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                    />
-                    <small class="text-gray-500 mt-1"
-                        >If not specified, defaults to 00:00</small
-                    >
+                    <div class="flex flex-col">
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Due Time (Optional)</label
+                        >
+                        <input
+                            type="time"
+                            :value="dateDueTimePart"
+                            @input="
+                                emit(
+                                    'update:dateDueTimePart',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            class="p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                        <small class="text-gray-500 mt-1"
+                            >If not specified, defaults to 00:00</small
+                        >
+                    </div>
                 </div>
 
                 <button
@@ -190,7 +206,75 @@ const closeExtendModal = () => {
                 v-if="isExtendModal"
                 class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-300"
             >
-                <h1 class="text-xl font-bold text-gray-800">Hello</h1>
+                <div class="flex flex-col gap-2 pb-2">
+                    <div class="flex flex-col">
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Detail</label
+                        >
+                        <input
+                            type="text"
+                            :value="taskDetails"
+                            @input="
+                                emit(
+                                    'update:taskDetails',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            placeholder="What needs to be done?"
+                            required
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Notes</label
+                        >
+                        <input
+                            type="text"
+                            :value="notesDetails"
+                            @input="
+                                emit(
+                                    'update:notesDetails',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            placeholder="What needs to be done?"
+                            required
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Priority</label
+                        >
+                        <select
+                            :value="priorityDetails"
+                            @input="
+                                emit(
+                                    'update:priorityDetails',
+                                    ($event.target as HTMLSelectElement).value,
+                                )
+                            "
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                        <label class="text-sm font-bold mb-1 text-gray-700"
+                            >Task Status</label
+                        >
+                        <input
+                            type="text"
+                            :value="statusDetails"
+                            @input="
+                                emit(
+                                    'update:statusDetails',
+                                    ($event.target as HTMLInputElement).value,
+                                )
+                            "
+                            placeholder="What needs to be done?"
+                            required
+                            class="w-full p-2 border border-gray-300 rounded text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                    </div>
+                </div>
 
                 <button
                     type="button"

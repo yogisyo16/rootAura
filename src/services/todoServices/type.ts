@@ -2,7 +2,7 @@ export interface TodoDetails {
   id: string;
   todo_id: string;
   task_details: string;
-  note_details: string;
+  notes_details: string;
   status_details: string;
   priority_details: string;
   created_at: string;
