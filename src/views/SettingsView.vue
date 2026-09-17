@@ -17,9 +17,9 @@ const handleSaveSettings = () => {
             <h1 class="text-2xl font-bold mb-6 text-white">Account Settings</h1>
             <form
                 @submit.prevent="handleSaveSettings"
-                class="bg-gray-800 p-6 rounded-lg shadow-lg"
+                class="flex flex-col gap-6 bg-gray-800 p-6 rounded-lg shadow-lg"
             >
-                <div class="mb-4">
+                <div class="flex flex-col gap-2">
                     <label class="block text-sm font-bold mb-2 text-gray-300"
                         >Username</label
                     >
@@ -31,7 +31,7 @@ const handleSaveSettings = () => {
                     />
                 </div>
 
-                <div class="mb-4">
+                <div class="flex flex-col gap-2">
                     <label class="block text-sm font-bold mb-2 text-gray-300"
                         >Email</label
                     >
@@ -43,24 +43,27 @@ const handleSaveSettings = () => {
                     />
                 </div>
 
-                <div class="mb-6 flex items-center">
-                    <input
-                        type="checkbox"
-                        v-model="notifications"
-                        id="notifications"
-                        class="w-4 h-4 mr-2"
-                    />
-                    <label for="notifications" class="text-sm text-gray-300">
-                        Enable notifications
-                    </label>
+                <div class="flex flex-col gap-[3px]">
+                    <div class="flex items-center gap-1">
+                        <input
+                            type="checkbox"
+                            v-model="notifications"
+                            id="notifications"
+                            class="w-4 h-4 mr-2"
+                        />
+                        <label for="notifications" class="text-sm text-gray-300">
+                            Enable notifications
+                        </label>
+                    </div>
+    
+                    <button
+                        type="submit"
+                        class="w-full p-2.5 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-colors"
+                    >
+                        Save Settings
+                    </button>
                 </div>
 
-                <button
-                    type="submit"
-                    class="w-full p-2.5 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-colors"
-                >
-                    Save Settings
-                </button>
             </form>
         </div>
     </div>
