@@ -10,7 +10,7 @@ const navigateTo = (path: string) => {
 </script>
 <template>
     <div class="flex flex-col items-center p-5 gap-10">
-        <h1 class="text-5xl">This is an about page</h1>
+        <h1 class="text-5xl">This is an user page</h1>
         <h1 class="text-lg">Nothing to see here</h1>
         <button
             @click="navigateTo('/todos')"

@@ -38,3 +38,7 @@ __screenshots__/
 # env
 .env
 .env.dev
+
+# Installed agent skills
+.agents
+.claude
