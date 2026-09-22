@@ -1,3 +1,13 @@
+import type {
+    ApiResponse,
+    CreateTodoDetailsInput,
+    CreateTodoInput,
+    PaginatedTodos,
+    Todo,
+    TodoDetails,
+    UpdateTodoInput,
+} from "./type";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const getTodos = async (
@@ -5,7 +15,7 @@ export const getTodos = async (
     limit: number = 10,
     sortBy: string = "created_at",
     sortOrder: string = "DESC",
-) => {
+): Promise<PaginatedTodos> => {
     const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
@@ -22,12 +32,9 @@ export const getTodos = async (
     };
 };
 
-export const createTodo = async (todoData: {
-    task: string;
-    date_start: string;
-    date_due: string;
-    completed: boolean;
-}) => {
+export const createTodo = async (
+    todoData: CreateTodoInput,
+): Promise<ApiResponse<Todo>> => {
     const response = await fetch(`${apiUrl}/api/v1/todos/create`, {
         method: "POST",
         headers: {
@@ -46,14 +53,8 @@ export const createTodo = async (todoData: {
 
 export const createTodosDetails = async (
     id: string,
-    todoDetails: {
-        todo_id: string;
-        task_details: string;
-        notes_details: string;
-        status_details: string;
-        priority_details: string;
-    },
-) => {
+    todoDetails: CreateTodoDetailsInput,
+): Promise<ApiResponse<TodoDetails>> => {
     const response = await fetch(`${apiUrl}/api/v1/todos/${id}/details`, {
         method: "POST",
         headers: {
@@ -70,7 +71,7 @@ export const createTodosDetails = async (
     return await response.json();
 };
 
-export const deleteTodo = async (id: string) => {
+export const deleteTodo = async (id: string): Promise<ApiResponse<null>> => {
     const response = await fetch(`${apiUrl}/api/v1/todos/delete/${id}`, {
         method: "DELETE",
     });
@@ -85,13 +86,8 @@ export const deleteTodo = async (id: string) => {
 
 export const updateTodo = async (
     id: string,
-    todoData: {
-        task: string;
-        date_start: string;
-        date_due: string;
-        completed: boolean;
-    },
-) => {
+    todoData: UpdateTodoInput,
+): Promise<ApiResponse<Todo>> => {
     const response = await fetch(`${apiUrl}/api/v1/todos/update/${id}`, {
         method: "PUT",
         headers: {
@@ -108,7 +104,9 @@ export const updateTodo = async (
     return await response.json();
 };
 
-export const toggleTodoComplete = async (id: string) => {
+export const toggleTodoComplete = async (
+    id: string,
+): Promise<ApiResponse<Todo>> => {
     const response = await fetch(`${apiUrl}/api/v1/todos/${id}/complete`, {
         method: "PATCH",
     });
@@ -121,13 +119,17 @@ export const toggleTodoComplete = async (id: string) => {
     return await response.json();
 };
 
-export const getTodosDetailsById = async (id: string) => {
-    const response = await fetch(`api/v1/todos/tododetails/${id}`);
+export const getTodosDetailsById = async (
+    id: string,
+): Promise<ApiResponse<TodoDetails>> => {
+    const response = await fetch(`${apiUrl}/api/v1/todos/tododetails/${id}`);
 
     return response.json();
 };
 
-export const getTodosDetailByTodoId = async (id: string) => {
+export const getTodosDetailByTodoId = async (
+    id: string,
+): Promise<ApiResponse<TodoDetails>> => {
     const response = await fetch(
         `${apiUrl}/api/v1/todos/tododetails/todoid/${id}`,
     );
@@ -135,8 +137,10 @@ export const getTodosDetailByTodoId = async (id: string) => {
     return response.json();
 };
 
-export const getTodosDetailsAll = async () => {
+export const getTodosDetailsAll = async (): Promise<
+    ApiResponse<TodoDetails[]>
+> => {
     const response = await fetch(`${apiUrl}/api/v1/todos/tododetails`);
 
-    return response.json;
+    return response.json();
 };
