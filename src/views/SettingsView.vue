@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 const username = ref("");
 const email = ref("");
+const password = ref("");
 const notifications = ref(true);
 
 const handleSaveSettings = () => {
@@ -14,7 +15,7 @@ const handleSaveSettings = () => {
 <template>
     <div class="flex justify-center mx-auto p-4">
         <div class="flex flex-col items-center gap-2">
-            <h1 class="text-2xl font-bold mb-6 text-white">Account Settings</h1>
+            <h1 class="text-2xl font-bold mb-6 text-white">Login account</h1>
             <form
                 @submit.prevent="handleSaveSettings"
                 class="flex flex-col gap-6 bg-gray-800 p-6 rounded-lg shadow-lg"
@@ -26,19 +27,19 @@ const handleSaveSettings = () => {
                     <input
                         type="text"
                         v-model="username"
-                        placeholder="Enter your username"
+                        placeholder="Username or Email"
                         class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
                     />
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <label class="block text-sm font-bold mb-2 text-gray-300"
-                        >Email</label
+                        >Password</label
                     >
                     <input
-                        type="email"
-                        v-model="email"
-                        placeholder="Enter your email"
+                        type="password"
+                        v-model="password"
+                        placeholder="Password"
                         class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
                     />
                 </div>
@@ -60,7 +61,7 @@ const handleSaveSettings = () => {
                         type="submit"
                         class="w-full p-2.5 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-colors"
                     >
-                        Save Settings
+                        Login
                     </button>
                 </div>
 
